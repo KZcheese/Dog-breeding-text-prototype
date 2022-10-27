@@ -1,7 +1,10 @@
+package statuseffects;
+
 public class Infection extends StatusEffect {
 
-    public Infection(String name, String description) {
-        super(name, description);
+
+    public Infection(String name, String description, boolean bound) {
+        super(name, description, bound);
     }
 
     @Override
