@@ -14,6 +14,8 @@ public class Game {
     private Bank bank;
     private List<Dog> pen;
 
+    private double[] demands;
+
     public static final double BREEDING_PADDING = 10;
 
     public Game() {
@@ -21,6 +23,7 @@ public class Game {
         bank = new Bank(500);
         pen = new ArrayList<>();
         generateStarters();
+        generateInitialDemand();
     }
 
     private void generateStarters() {
@@ -32,8 +35,48 @@ public class Game {
         }
     }
 
+    private void generateInitialDemand() {
+        demands = new double[]{
+                Math.random() * 40 + 30,
+                Math.random() * 40 + 30,
+                Math.random() * 40 + 30,
+                Math.random() * 40 + 30,
+                Math.random() * 40 + 30
+        };
+    }
+
+    private void updateDemand() {
+        for (int i = 0; i < demands.length; i++) {
+            int[] dateSegments = date.getDateSegments();
+            double offset = Math.random() * 10 - 5;
+            double demand = demands[i] + offset;
+            if (dateSegments[1] < 1)
+                demands[i] = demand;
+            else if (dateSegments[0] < 1)
+                demands[i] = Math.pow(demand, 1.5) / Math.pow(100, 1.5);
+            else
+                demands[i] = Math.pow(demand, 2) / Math.pow(100, 2);
+        }
+    }
+
+    private void introduction(){
+
+    }
+
+    private void penView(){
+
+    }
+
+    private void dogStatus(Dog d){
+
+    }
+
+    private void nextDay(){
+        date.advance();
+    }
+
     public void run() {
-        while (true){
+        while (true) {
 
         }
     }
