@@ -43,6 +43,16 @@ public class Attribute {
         return totalEffect;
     }
 
+    public String toString(){
+        StringBuilder output = new StringBuilder(name + ": " + status);
+        for (StatusEffect statusEffect : statusEffects){
+            if (statusEffect.isActive()){
+                output.append(" (" + statusEffect.getName() + ")");
+            }
+        }
+        return output.toString();
+    }
+
     private static List<Attribute> generateAttributes() {
         List<Attribute> attributes = new ArrayList<>(5);
 

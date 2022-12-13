@@ -1,34 +1,41 @@
-import org.w3c.dom.Attr;
-import org.xml.sax.helpers.AttributesImpl;
-import statuseffects.PersistentDamage;
-import statuseffects.Infection;
-import statuseffects.RandomDamage;
-import statuseffects.StatusEffect;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Game {
 
-    private Date date;
-    private Bank bank;
+    public static final int PEN_SIZE = 8;
+    public static final int INITIAL_SIZE = 4;
+    public static final double BREEDING_PADDING = 10;
+    public static final double STARTING_MONEY = 500.0;
+
+    private final Scanner input;
+    private final Date date;
+    private final Bank bank;
     private List<Dog> pen;
+
+    private List<Pair<String, String>> inputOptions;
 
     private double[] demands;
 
-    public static final double BREEDING_PADDING = 10;
+    private List<Pair<Integer, Integer>> breedingPairs;
+
+
 
     public Game() {
+        System.out.println("Loading...");
+        input = new Scanner(System.in);
         date = new Date();
-        bank = new Bank(500);
+        bank = new Bank(STARTING_MONEY);
         pen = new ArrayList<>();
         generateStarters();
         generateInitialDemand();
+        System.out.println("Done!");
     }
 
     private void generateStarters() {
-        for (int i = 0; i < 3; i++) {
-            List<Attribute> starterAttributes = new ArrayList<>(5);
+        for (int i = 0; i < INITIAL_SIZE; i++) {
+            List<Attribute> starterAttributes = new ArrayList<>(Attribute.attributePresets.size());
             for (Attribute attribute : Attribute.attributePresets)
                 starterAttributes.add(new Attribute(attribute.name, Math.random() * 40 + 30, attribute.statusEffects));
             pen.add(new Dog("Starter", "Starter Dog", starterAttributes, true));
@@ -64,6 +71,21 @@ public class Game {
     }
 
     private void penView(){
+        System.out.println("Here's your Pen:");
+        for (Dog dog : pen){
+            StringBuilder dogInfo = new StringBuilder(dog.getName() + "\t" + dog.getAge() + "\t");
+            for (Attribute attribute: dog.getAttributes()){
+                dogInfo.append(attribute);
+            }
+            System.out.println(dogInfo);
+        }
+    }
+
+    private void breedView(){
+
+    }
+
+    private void dogView(){
 
     }
 
@@ -71,13 +93,39 @@ public class Game {
 
     }
 
+    private void optionsView(){
+        System.out.println(
+                "D to examine a Dog\t" +
+                        "B to Breed Dogs\t" +
+                        "E to End the Day"
+        );
+    }
+
     private void nextDay(){
         date.advance();
+        updateDemand();
     }
 
     public void run() {
+        introduction();
         while (true) {
-
+            penView();
+            optionsView();
+            String choice = input.next();
+            System.out.println();
+            switch (choice.toUpperCase()) {
+                case "D":
+                    dogView();
+                    break;
+                case "B":
+                    breedView();
+                    break;
+                case "E":
+                    nextDay();
+                    break;
+                default:
+                    System.out.println(choice + "is not an option. Please try again.");
+            }
         }
     }
 
@@ -85,4 +133,5 @@ public class Game {
         Game game = new Game();
         game.run();
     }
+
 }

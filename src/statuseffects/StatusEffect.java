@@ -3,6 +3,8 @@ package statuseffects;
 import org.w3c.dom.Attr;
 
 public abstract class StatusEffect {
+
+
     private String name;
     private String description;
 
@@ -14,6 +16,14 @@ public abstract class StatusEffect {
         this.name = name;
         this.description = description;
         this.lowerBound = lowerBound;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     protected double severity(Double status) {
